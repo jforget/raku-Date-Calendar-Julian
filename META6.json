@@ -1,10 +1,14 @@
 {
+  "auth" : "cpan:JFORGET",
   "authors" : [
     "Jean Forget"
   ],
   "build-depends" : [ ],
-  "depends" : [ ],
-  "description" : "blah blah blah",
+  "depends"       : [
+      "Date::Names"
+    , "Date::Calendar::Strftime"
+  ],
+  "description" : "Conversions from / to the Julian calendar",
   "license" : "Artistic-2.0",
   "name" : "Date::Calendar::Julian",
   "perl" : "6.c",
@@ -12,8 +16,16 @@
     "Date::Calendar::Julian" : "lib/Date/Calendar/Julian.pm6"
   },
   "resources" : [ ],
-  "source-url" : "",
-  "tags" : [ ],
-  "test-depends" : [ ],
+  "source-url" : "https://github.com/jforget/raku-Date-Calendar-Julian.git",
+  "support" : {
+    "email" : "JFORGET@cpan.org"
+  },
+  "tags" : [
+      "date"
+    , "calendar"
+  ],
+  "test-depends" : [ 
+      "Test::META"
+  ],
   "version" : "0.0.1"
 }
