@@ -6,8 +6,41 @@ Date::Calendar::Julian - Conversions from / to the Julian calendar
 SYNOPSIS
 ========
 
+When does the  Perl & Raku Conference in Amsterdam  begin? Please give
+your answer in Dutch and in the Julian calendar.
+
 ```perl6
 use Date::Calendar::Julian;
+my Date                   $TPRC-Amsterdam-grg;
+my Date::Calendar::Julian $TPRC-Amsterdam-jul;
+
+$TPRC-Amsterdam-grg .= new(2020, 8, 10);
+$TPRC-Amsterdam-jul .= new-from-date($TPRC-Amsterdam-grg);
+
+say $TPRC-Amsterdam-jul;
+# --> 2020-07-28
+$TPRC-Amsterdam-jul.locale = 'nl';
+say $TPRC-Amsterdam-jul.strftime("%A %d %B %Y");
+# --> maandag 28 juli 2020
+say 
+```
+
+The Perl  & Raku Conference ends  on 1st August when  using the Julian
+calendar. What is the corresponding Gregorian date?
+
+```perl6
+use Date::Calendar::Julian;
+my Date::Calendar::Julian $TPRC-Amsterdam-jul;
+my Date                   $TPRC-Amsterdam-grg;
+
+$TPRC-Amsterdam-jul .= new(year  => 2020
+                         , month =>    8
+                         , day   =>    1);
+$TPRC-Amsterdam-grg = $TPRC-Amsterdam-jul.to-date;
+
+say $TPRC-Amsterdam-grg;
+# --> 2020-08-14
+
 ```
 
 INSTALLATION
