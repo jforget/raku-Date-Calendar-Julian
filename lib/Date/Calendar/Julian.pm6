@@ -50,12 +50,30 @@ method _build-from-args(Int $year, Int $month, Int $day) {
   $!year   = $year;
   $!month  = $month;
   $!day    = $day;
+
+  # computing the offset of each month from the beginning of the year.
+  # Do not bother about the apparent "off-by-two" error, it is deliberate
+  my Int @elem-offset = (0, 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30);
+  if $year %% 4 {
+    ++ @elem-offset[3];
+  }
+  my Int @full-offset = [\+] @elem-offset;
+  my Int $doy = @full-offset[$month] + $day;
+  my Int $mjd = $doy + (($year - 1) × 365.25).floor - mjd-bias();
+  my Int $dow = ($mjd + 2) % 7 + 1;
+
+  $!day-of-year = $doy;
+  $!daycount    = $mjd;
+  $!day-of-week = $dow;
 }
 
 method gist {
   sprintf("%04d-%02d-%02d", $.year, $.month, $.day);
 }
 
+sub mjd-bias( --> Int) {
+  return 678578;
+}
 
 
 =begin pod

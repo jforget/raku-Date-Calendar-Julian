@@ -22,7 +22,6 @@ say $TPRC-Amsterdam-jul;
 $TPRC-Amsterdam-jul.locale = 'nl';
 say $TPRC-Amsterdam-jul.strftime("%A %d %B %Y");
 # --> maandag 28 juli 2020
-say 
 ```
 
 The Perl  & Raku Conference ends  on 1st August when  using the Julian
