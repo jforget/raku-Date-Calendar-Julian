@@ -65,6 +65,28 @@ method _build-from-args(Int $year, Int $month, Int $day) {
   $!day-of-year = $doy;
   $!daycount    = $mjd;
   $!day-of-week = $dow;
+
+  # computing week-related derived attributes
+  my Int $doy-thursday = $doy - $dow + 4; # day-of-year value for the nearest Thursday
+  my Int $week-year    = $year;
+  if $doy-thursday ≤ 0 {
+    -- $week-year;
+    $doy         += year-days($week-year);
+    $doy-thursday = $doy - $dow + 4;
+  }
+  else {
+    my $year-length = year-days($week-year);
+    if $doy-thursday > $year-length {
+      $doy         -= $year-length;
+      $doy-thursday = $doy - $dow + 4;
+      ++ $week-year;
+    }
+  }
+  my Int $week-number = ($doy-thursday / 7).ceiling;
+
+  # storing week-related derived attributes
+  $!week-number = $week-number;
+  $!week-year   = $week-year;
 }
 
 method gist {
@@ -75,6 +97,14 @@ sub mjd-bias( --> Int) {
   return 678578;
 }
 
+sub year-days (Int $year --> Int) {
+  if $year %% 4 {
+    return 366;
+  }
+  else {
+    return 365;
+  }
+}
 
 =begin pod
 
