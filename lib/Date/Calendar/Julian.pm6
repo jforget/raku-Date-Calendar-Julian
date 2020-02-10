@@ -5,7 +5,7 @@ use Date::Names;
 unit class Date::Calendar::Julian:ver<0.0.1>:auth<cpan:JFORGET>
       does Date::Calendar::Strftime;
 
-has Int $.year  where { $_ ≥ 1 };
+has Int $.year;
 has Int $.month where { 1 ≤ $_ ≤ 12 };
 has Int $.day   where { 1 ≤ $_ ≤ 31 };
 has Int $.daycount;
@@ -91,6 +91,12 @@ method _build-from-args(Int $year, Int $month, Int $day) {
 
 method gist {
   sprintf("%04d-%02d-%02d", $.year, $.month, $.day);
+}
+
+method to-date($class = 'Date') {
+  # See "Learning Perl 6" page 177
+  my $d = ::($class).new-from-daycount($.daycount);
+  return $d;
 }
 
 sub mjd-bias( --> Int) {
