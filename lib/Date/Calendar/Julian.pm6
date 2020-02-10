@@ -1,6 +1,7 @@
 use v6.c;
 use Date::Calendar::Strftime;
 use Date::Names;
+use List::MoreUtils <last_index>;
 
 unit class Date::Calendar::Julian:ver<0.0.1>:auth<cpan:JFORGET>
       does Date::Calendar::Strftime;
@@ -51,13 +52,7 @@ method _build-from-args(Int $year, Int $month, Int $day) {
   $!month  = $month;
   $!day    = $day;
 
-  # computing the offset of each month from the beginning of the year.
-  # Do not bother about the apparent "off-by-two" error, it is deliberate
-  my Int @elem-offset = (0, 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30);
-  if $year %% 4 {
-    ++ @elem-offset[3];
-  }
-  my Int @full-offset = [\+] @elem-offset;
+  my Int @full-offset = full-offset($year);
   my Int $doy = @full-offset[$month] + $day;
   my Int $mjd = $doy + (($year - 1) × 365.25).floor - mjd-bias();
   my Int $dow = ($mjd + 2) % 7 + 1;
@@ -93,6 +88,20 @@ method gist {
   sprintf("%04d-%02d-%02d", $.year, $.month, $.day);
 }
 
+method new-from-date($date) {
+  $.new-from-daycount($date.daycount);
+}
+
+method new-from-daycount(Int $count) {
+  my Int $biased-count = $count + mjd-bias;
+  my Int $y      = 1 + (($biased-count - 1) / 365.25).floor;
+  my Int $doy    = $biased-count - (365.25 × ($y - 1)).floor;
+  my Int @offset = full-offset($y);
+  my Int $m      = last_index { $doy > $_ }, @offset;
+  my Int $d      = $doy - @offset[$m];
+  $.new(year => $y, month => $m, day => $d);
+}
+
 method to-date($class = 'Date') {
   # See "Learning Perl 6" page 177
   my $d = ::($class).new-from-daycount($.daycount);
@@ -110,6 +119,16 @@ sub year-days (Int $year --> Int) {
   else {
     return 365;
   }
+}
+
+# computing the offset of each month from the beginning of the year.
+# Do not bother about the apparent "off-by-two" error, it is deliberate
+sub full-offset(Int $year) {
+  my Int @elem-offset = (0, 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30);
+  if $year %% 4 {
+    ++ @elem-offset[3];
+  }
+  return [\+] @elem-offset;
 }
 
 =begin pod

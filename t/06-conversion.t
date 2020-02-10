@@ -8,7 +8,7 @@ use Date::Calendar::Julian;
 
 my @data = load-data();
 
-plan 1 × @data.elems;
+plan 2 × @data.elems;
 
 for @data -> $datum {
   my ($yg, $mg, $dg, $yj, $mj, $dj) = $datum;
@@ -16,6 +16,14 @@ for @data -> $datum {
   my Date $computed  = $d-jul.to-date;
   my Date $expected .= new($yg, $mg, $dg);
   is($computed.gist, $expected.gist, "conversion of {$d-jul.gist} to $expected");
+}
+
+for @data -> $datum {
+  my ($yg, $mg, $dg, $yj, $mj, $dj) = $datum;
+  my Date $orig .= new($yg, $mg, $dg);
+  my Date::Calendar::Julian $expected .= new(year => $yj, month => $mj, day => $dj);
+  my Date::Calendar::Julian $computed .= new-from-date($orig);
+  is($computed.gist, $expected.gist, "conversion of {$orig.gist} to {$expected.gist}");
 }
 
 
@@ -58,12 +66,13 @@ sub load-data {
         , (2038, 11, 10, 2038, 10, 28)
         , (2094,  7, 18, 2094,  7,  5)
         # epochs
-	, (   0, 12, 29,    0, 12, 31)
-	, (   0, 12, 30,    1,  1,  1)
-	, (   0, 12, 31,    1,  1,  2)
-	, (   1,  1,  1,    1,  1,  3)
-	, (1858, 11, 16, 1858, 11,  4)
-	, (1858, 11, 17, 1858, 11,  5)
-	, (1858, 11, 18, 1858, 11,  6)
-	);
+        , (   0, 12, 29,    0, 12, 31)
+        , (   0, 12, 30,    1,  1,  1)
+        , (   0, 12, 31,    1,  1,  2)
+        , (   1,  1,  1,    1,  1,  3)
+        , (1582, 10, 15, 1582, 10,  5)
+        , (1858, 11, 16, 1858, 11,  4)
+        , (1858, 11, 17, 1858, 11,  5)
+        , (1858, 11, 18, 1858, 11,  6)
+        );
 }
