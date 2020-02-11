@@ -1,6 +1,6 @@
 use v6.c;
-use Date::Calendar::Strftime;
 use Date::Names;
+use Date::Calendar::Strftime;
 use List::MoreUtils <last_index>;
 
 unit class Date::Calendar::Julian:ver<0.0.1>:auth<cpan:JFORGET>
@@ -14,13 +14,14 @@ has Int $.day-of-year;
 has Int $.day-of-week;
 has Int $.week-number;
 has Int $.week-year;
+has Str $.locale is rw where { check-locale($_) } = 'en';
 
-method BUILD(Int:D :$year, Int:D :$month, Int:D :$day) {
-  $._chek-build-args($year, $month, $day);
-  $._build-from-args($year, $month, $day);
+method BUILD(Int:D :$year, Int:D :$month, Int:D :$day, Str :$locale = 'en') {
+  $._chek-build-args($year, $month, $day, $locale);
+  $._build-from-args($year, $month, $day, $locale);
 }
 
-method _chek-build-args(Int $year, Int $month, Int $day) {
+method _chek-build-args(Int $year, Int $month, Int $day, Str $locale) {
   unless 1 ≤ $month ≤ 12 {
     X::OutOfRange.new(:what<Month>, :got($month), :range<1..12>).throw;
   }
@@ -45,9 +46,13 @@ method _chek-build-args(Int $year, Int $month, Int $day) {
     }
   }
 
+  unless check-locale($locale) {
+    X::Invalid::Value.new(:method<BUILD>, :name<locale>, :value($locale)).throw;
+  }
+
 }
 
-method _build-from-args(Int $year, Int $month, Int $day) {
+method _build-from-args(Int $year, Int $month, Int $day, Str $locale) {
   $!year   = $year;
   $!month  = $month;
   $!day    = $day;
@@ -129,6 +134,13 @@ sub full-offset(Int $year) {
     ++ @elem-offset[3];
   }
   return [\+] @elem-offset;
+}
+
+sub check-locale ($locale) {
+  unless grep { $_ eq $locale }, @Date::Names::langs {
+    X::Invalid::Value.new(:method<BUILD>, :name<locale>, :value($locale)).throw;
+  }
+  True;
 }
 
 =begin pod
