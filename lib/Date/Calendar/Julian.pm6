@@ -132,6 +132,20 @@ sub mjd-bias( --> Int) {
   return 678578;
 }
 
+method month-abbr {
+  my $locale = $.locale;
+  my $index  = $.month - 1;
+  my $class  = "Date::Names::$locale";
+  $::($class)::mon3[$index] // $::($class)::mona[$index] // $::($class)::mon2[$index];
+}
+
+method day-abbr {
+  my $locale = $.locale;
+  my $index  = $.day-of-week - 1;
+  my $class  = "Date::Names::$locale";
+  $::($class)::dow3[$index] // $::($class)::dowa[$index] // $::($class)::dow2[$index];
+}
+
 sub year-days (Int $year --> Int) {
   if $year %% 4 {
     return 366;
@@ -282,7 +296,12 @@ locale.
 
 =head3 month-abbr
 
-The month of the  date, as a 3-char string.
+The abbreviated month of the date.
+
+Depending on the  locale, it may be  a 3-char string, a  short code of
+variable length or a 2-char  string. Please refer to the documentation
+of  C<Date::Names>  for  the  availability  of  C<mon3>,  C<mona>  and
+C<mon2>.
 
 =head3 day-name
 
@@ -291,7 +310,12 @@ locale.
 
 =head3 day-abbr
 
-The day of the week, as a 3-char string.
+The abbreviated day name of the date.
+
+Depending on the  locale, it may be  a 3-char string, a  short code of
+variable length or a 2-char  string. Please refer to the documentation
+of  C<Date::Names>  for  the  availability  of  C<dow3>,  C<dowa>  and
+C<dow2>.
 
 =head3 day-of-week
 
