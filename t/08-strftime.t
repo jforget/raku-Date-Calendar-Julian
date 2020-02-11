@@ -37,7 +37,7 @@ for @tests -> $test {
   my $result = $d-jul.strftime($format);
 
   # Remembering RT ticket 100311 for the Perl 5 module DateTime::Calendar::FrenchRevolutionary
-  # Even if the relations between UTF-8 and Perl6 are much simpler than between UTF-8 and Perl5
+  # Even if the relations between UTF-8 and Raku are much simpler than between UTF-8 and Perl5
   # better safe than sorry
   is($result.chars, $length);
   is($result,       $expected);

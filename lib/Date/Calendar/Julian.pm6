@@ -20,11 +20,11 @@ has Str         $!instantiated-locale;
 has Date::Names $!date-names;
 
 method BUILD(Int:D :$year, Int:D :$month, Int:D :$day, Str :$locale = 'en') {
-  $._chek-build-args($year, $month, $day, $locale);
-  $._build-from-args($year, $month, $day, $locale);
+  self!check-build-args($year, $month, $day, $locale);
+  self!build-from-args( $year, $month, $day, $locale);
 }
 
-method _chek-build-args(Int $year, Int $month, Int $day, Str $locale) {
+method !check-build-args(Int $year, Int $month, Int $day, Str $locale) {
   unless 1 ≤ $month ≤ 12 {
     X::OutOfRange.new(:what<Month>, :got($month), :range<1..12>).throw;
   }
@@ -55,7 +55,7 @@ method _chek-build-args(Int $year, Int $month, Int $day, Str $locale) {
 
 }
 
-method _build-from-args(Int $year, Int $month, Int $day, Str $locale) {
+method !build-from-args(Int $year, Int $month, Int $day, Str $locale) {
   $!year   = $year;
   $!month  = $month;
   $!day    = $day;
