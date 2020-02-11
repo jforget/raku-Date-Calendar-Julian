@@ -16,6 +16,9 @@ has Int $.week-number;
 has Int $.week-year;
 has Str $.locale is rw where { check-locale($_) } = 'en';
 
+has Str         $!instantiated-locale;
+has Date::Names $!date-names;
+
 method BUILD(Int:D :$year, Int:D :$month, Int:D :$day, Str :$locale = 'en') {
   $._chek-build-args($year, $month, $day, $locale);
   $._build-from-args($year, $month, $day, $locale);
@@ -56,6 +59,8 @@ method _build-from-args(Int $year, Int $month, Int $day, Str $locale) {
   $!year   = $year;
   $!month  = $month;
   $!day    = $day;
+  $!locale = $locale;
+  $!instantiated-locale = '';
 
   my Int @full-offset = full-offset($year);
   my Int $doy = @full-offset[$month] + $day;
@@ -113,6 +118,16 @@ method to-date($class = 'Date') {
   return $d;
 }
 
+method month-name {
+  $.lazy-instance;
+  $!date-names.mon($.month);
+}
+
+method day-name {
+  $.lazy-instance;
+  $!date-names.dow($.day-of-week);
+}
+
 sub mjd-bias( --> Int) {
   return 678578;
 }
@@ -141,6 +156,13 @@ sub check-locale ($locale) {
     X::Invalid::Value.new(:method<BUILD>, :name<locale>, :value($locale)).throw;
   }
   True;
+}
+
+method lazy-instance {
+  if $.locale ne $!instantiated-locale {
+    $!date-names = Date::Names.new(lang => $.locale);
+    $!instantiated-locale = $.locale;
+  }
 }
 
 =begin pod
@@ -226,9 +248,15 @@ Build a  Julian date  by cloning  an object  from another  class. This
 other   class    can   be    the   core    class   C<Date>    or   any
 C<Date::Calendar::>R<xxx> class with a C<daycount> method.
 
+This method does not allow a  C<locale> build parameter. The object is
+built with the default locale, C<'en'>.
+
 =head3 new-from-daycount
 
 Build a Julian date from the Modified Julian Day number.
+
+This method does not allow a  C<locale> build parameter. The object is
+built with the default locale, C<'en'>.
 
 =head2 Accessors
 
@@ -239,6 +267,13 @@ Gives a short string representing the date, in C<YYYY-MM-DD> format.
 =head3 year, month, day
 
 The numbers defining the date.
+
+=head3 locale
+
+The two-char  string defining the  locale used  for the date.  Use any
+value allowed by the module C<Date::Names>.
+
+This attribute can be updated after build time.
 
 =head3 month-name
 
@@ -324,6 +359,17 @@ When converting I<from> Gregorian, use the pull style. When converting
 I<to> Gregorian, use the push style. When converting from any calendar
 other than Gregorian  to any other calendar other  than Gregorian, use
 the style you prefer.
+
+Even  if both  calendars use  a C<locale>  attribute, when  a date  is
+created by  the conversion  of another  date, it  is created  with the
+default  locale. If  you  want the  locale to  be  transmitted in  the
+conversion, you should add this line:
+
+=begin code :lang<perl6>
+
+$d-dest-pull.locale = $d-orig.locale;
+
+=end code
 
 =head3 strftime
 
@@ -451,6 +497,8 @@ A literal `%' character.
 =head1 SEE ALSO
 
 =head2 Raku Software
+
+L<Date::Names>
 
 L<Date::Calendar::Strftime>
 or L<https://github.com/jforget/raku-Date-Calendar-Strftime>
