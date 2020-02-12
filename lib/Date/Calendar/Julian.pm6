@@ -119,12 +119,12 @@ method to-date($class = 'Date') {
 }
 
 method month-name {
-  $.lazy-instance;
+  self!lazy-instance;
   $!date-names.mon($.month);
 }
 
 method day-name {
-  $.lazy-instance;
+  self!lazy-instance;
   $!date-names.dow($.day-of-week);
 }
 
@@ -172,7 +172,7 @@ sub check-locale ($locale) {
   True;
 }
 
-method lazy-instance {
+method !lazy-instance {
   if $.locale ne $!instantiated-locale {
     $!date-names = Date::Names.new(lang => $.locale);
     $!instantiated-locale = $.locale;
