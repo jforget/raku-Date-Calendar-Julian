@@ -39,7 +39,7 @@ $d.locale = 'fr';
 is($d.locale    , 'fr');
 is($d.month-name, 'février');
 is($d.day-name  , 'dimanche');
-is($d.month-abbr, 'févr');
+is($d.month-abbr, 'FR');
 is($d.day-abbr  , 'dim');
 
 
