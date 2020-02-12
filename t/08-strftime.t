@@ -5,7 +5,25 @@ use v6.c;
 use Test;
 use Date::Calendar::Julian;
 
-my @tests = ((2019,  6,  1, 'en', 'zzz',          3, 'zzz')
+my @tests = test-data;
+plan 2 × @tests.elems;
+
+for @tests -> $test {
+  my ($y, $m, $d, $locale, $format, $length, $expected) = $test;
+  my Date::Calendar::Julian $d-jul .= new(year => $y, month => $m, day => $d, locale => $locale);
+  my $result = $d-jul.strftime($format);
+
+  # Remembering RT ticket 100311 for the Perl 5 module DateTime::Calendar::FrenchRevolutionary
+  # Even if the relations between UTF-8 and Raku are much simpler than between UTF-8 and Perl5
+  # better safe than sorry
+  is($result.chars, $length);
+  is($result,       $expected);
+}
+
+done-testing;
+
+sub test-data {
+  return    ((2019,  6,  1, 'en', 'zzz',          3, 'zzz')
            , (2019,  6,  1, 'en', '%Y-%m-%d',    10, '2019-06-01')
            , (2019,  6,  1, 'en', '%j',           3, '152')
            , (2019,  6,  1, 'en', '%Oj',          3, '152')
@@ -29,18 +47,4 @@ my @tests = ((2019,  6,  1, 'en', 'zzz',          3, 'zzz')
            , (2020,  3,  2, 'nb', '%A %B %a %b', 17, 'søndag mars %a %b')
            , (2020,  3,  2, 'ru', '%A %B %a %b', 23, 'воскресенье март Вс мар')
              );
-plan 2 × @tests.elems;
-
-for @tests -> $test {
-  my ($y, $m, $d, $locale, $format, $length, $expected) = $test;
-  my Date::Calendar::Julian $d-jul .= new(year => $y, month => $m, day => $d, locale => $locale);
-  my $result = $d-jul.strftime($format);
-
-  # Remembering RT ticket 100311 for the Perl 5 module DateTime::Calendar::FrenchRevolutionary
-  # Even if the relations between UTF-8 and Raku are much simpler than between UTF-8 and Perl5
-  # better safe than sorry
-  is($result.chars, $length);
-  is($result,       $expected);
 }
-
-done-testing;
