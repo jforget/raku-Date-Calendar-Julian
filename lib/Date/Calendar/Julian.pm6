@@ -191,23 +191,36 @@ Date::Calendar::Julian - Converting from / to the Julian calendar
 
 =head1 SYNOPSIS
 
-Converting a Gregorian date (e.g. 10 August 2020) into Julian
+Converting a Gregorian date (e.g. 15 February 2020) into Julian
 
 =begin code :lang<perl6>
 
 use Date::Calendar::Julian;
-my Date                   $TPRC-Amsterdam-grg;
-my Date::Calendar::Julian $TPRC-Amsterdam-jul;
 
-$TPRC-Amsterdam-grg .= new(2020, 8, 10);
-$TPRC-Amsterdam-jul .= new-from-date($TPRC-Amsterdam-grg);
+my Date $feb15-grg;
+my Date::Calendar::Julian $palindrome-jul;
 
-say $TPRC-Amsterdam-jul;
-# --> 2020-07-28
-$TPRC-Amsterdam-jul.locale = 'nl';
-say $TPRC-Amsterdam-jul.strftime("%A %d %B %Y");
-# --> maandag 28 juli 2020
-say 
+$feb15-grg      .= new(2020, 2, 15);
+$palindrome-jul .= new-from-date($feb15-grg);
+
+say $palindrome-jul;
+# --> 2020-02-02
+$palindrome-jul.locale = 'nl';
+say $palindrome-jul.strftime("%A %e %B %Y");
+# --> zaterdag  2 februari 2020
+
+my Str $s1 = $palindrome-jul.strftime("%Y%m%d");
+if $s1 eq $s1.flip {
+  say "$s1 is a palindrome in YYYYMMDD format!";
+}
+$s1 = $palindrome-jul.strftime("%d%m%Y");
+if $s1 eq $s1.flip {
+  say "$s1 is a palindrome in DDMMYYYY format!";
+}
+$s1 = $palindrome-jul.strftime("%m%d%Y");
+if $s1 eq $s1.flip {
+  say "$s1 is a palindrome in MMDDYYYY format!";
+}
 
 =end code
 
