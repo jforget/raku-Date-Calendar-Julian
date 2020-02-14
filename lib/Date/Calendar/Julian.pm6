@@ -3,7 +3,7 @@ use Date::Names;
 use Date::Calendar::Strftime;
 use List::MoreUtils <last_index>;
 
-unit class Date::Calendar::Julian:ver<0.0.1>:auth<cpan:JFORGET>
+unit class Date::Calendar::Julian:ver<0.0.2>:auth<cpan:JFORGET>
       does Date::Calendar::Strftime;
 
 has Int $.year;
