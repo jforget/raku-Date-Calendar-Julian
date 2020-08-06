@@ -1,7 +1,8 @@
 Revision history for Date-Calendar-Julian
 
-0.0.2 released on...
-    - fix a crash which occurred when converting to 1st January on most years
+0.0.2 released on Thursday 24 July 2020 Julian (Thursday 6th August Gregorian)
+    - fix a crash which occurred when converting to 1st January on most years.
+    - improve the documentation.
 
 0.0.1 released just before the Julian Palindrome Day, 2020-02-02 (Gregorian 2020-02-15)
     - Initial version
