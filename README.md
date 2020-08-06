@@ -38,8 +38,8 @@ if $s1 eq $s1.flip {
 }
 ```
 
-The Perl  & Raku Conference ends  on 1st August when  using the Julian
-calendar. What is the corresponding Gregorian date?
+The Perl  & Raku Conference  was scheduled to  end on 1st  August when
+using the Julian calendar. What is the corresponding Gregorian date?
 
 ```perl6
 use Date::Calendar::Julian;
