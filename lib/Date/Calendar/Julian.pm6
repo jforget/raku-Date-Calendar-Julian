@@ -236,8 +236,9 @@ $TPRC-Amsterdam-jul .= new(year  => 2020
                          , day   =>    1);
 $TPRC-Amsterdam-grg = $TPRC-Amsterdam-jul.to-date;
 
-say "The Perl and Raku conference ends on ", $TPRC-Amsterdam-grg;
-# --> The Perl and Raku conference ends on 2020-08-14
+say "The Perl and Raku conference was scheduled to end on ", $TPRC-Amsterdam-grg;
+# --> The Perl and Raku conference was scheduled to end on 2020-08-14
+
 =end code
 
 =head1 DESCRIPTION
@@ -395,10 +396,14 @@ $d-dest-pull .= new-from-date($d-orig);
 
 =end code
 
-When converting I<from> Gregorian, use the pull style. When converting
-I<to> Gregorian, use the push style. When converting from any calendar
-other than Gregorian  to any other calendar other  than Gregorian, use
-the style you prefer.
+And the dates C<$d-dest-push> and C<$d-dest-pull> are identical.
+
+When converting  I<from> the core  class C<Date>, use the  pull style.
+When converting I<to> the core class C<Date>, use the push style. When
+converting from  any class other  than the  core class C<Date>  to any
+other  class other  than the  core class  C<Date>, use  the style  you
+prefer.   This   includes   the   class   C<Date::Calendar::Gregorian>
+inheriting from C<Date> and implementing the Gregorian calendar.
 
 Even  if both  calendars use  a C<locale>  attribute, when  a date  is
 created by  the conversion  of another  date, it  is created  with the
@@ -473,7 +478,7 @@ The full month name.
 
 =defn C<%d>
 
-The day of the month as a decimal number (range 01 to 30).
+The day of the month as a decimal number (range 01 to 31).
 
 =defn C<%e>
 
@@ -543,11 +548,17 @@ L<Date::Names>
 L<Date::Calendar::Strftime>
 or L<https://github.com/jforget/raku-Date-Calendar-Strftime>
 
+L<Date::Calendar::Gregorian>
+or L<https://github.com/jforget/raku-Date-Calendar-Gregorian>
+
 L<Date::Calendar::Hebrew>
 or L<https://github.com/jforget/raku-Date-Calendar-Hebrew>
 
 L<Date::Calendar::CopticEthiopic>
 or L<https://github.com/jforget/raku-Date-Calendar-CopticEthiopic>
+
+L<Date::Calendar::MayaAztec>
+or L<https://github.com/jforget/raku-Date-Calendar-MayaAztec>
 
 L<Date::Calendar::FrenchRevolutionary>
 or L<https://github.com/jforget/raku-Date-Calendar-FrenchRevolutionary>
