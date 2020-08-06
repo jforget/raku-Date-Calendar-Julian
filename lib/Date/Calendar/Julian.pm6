@@ -104,7 +104,7 @@ method new-from-date($date) {
 
 method new-from-daycount(Int $count) {
   my Int $biased-count = $count + mjd-bias;
-  my Int $y      = 1 + (($biased-count - 1) / 365.25).floor;
+  my Int $y      = 1 + (($biased-count - 0.25) / 365.25).floor;
   my Int $doy    = $biased-count - (365.25 × ($y - 1)).floor;
   my Int @offset = full-offset($y);
   my Int $m      = last_index { $doy > $_ }, @offset;
