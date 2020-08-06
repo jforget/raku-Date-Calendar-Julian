@@ -15,7 +15,7 @@ for @data -> $datum {
   my Date::Calendar::Julian $d-jul .= new(year => $yj, month => $mj, day => $dj);
   my Date $computed  = $d-jul.to-date;
   my Date $expected .= new($yg, $mg, $dg);
-  is($computed.gist, $expected.gist, "conversion of {$d-jul.gist} to $expected");
+  is($computed.gist, $expected.gist, "conversion of Julian {$d-jul.gist} to Gregorian $expected");
 }
 
 for @data -> $datum {
@@ -23,7 +23,7 @@ for @data -> $datum {
   my Date $orig .= new($yg, $mg, $dg);
   my Date::Calendar::Julian $expected .= new(year => $yj, month => $mj, day => $dj);
   my Date::Calendar::Julian $computed .= new-from-date($orig);
-  is($computed.gist, $expected.gist, "conversion of {$orig.gist} to {$expected.gist}");
+  is($computed.gist, $expected.gist, "conversion of Gregorian {$orig.gist} to Julian {$expected.gist}");
 }
 
 
@@ -74,5 +74,12 @@ sub load-data {
         , (1858, 11, 16, 1858, 11,  4)
         , (1858, 11, 17, 1858, 11,  5)
         , (1858, 11, 18, 1858, 11,  6)
+        # values that crash with version 0.0.1
+        , ( 202,  1,  1,  202,  1,  1)
+        , ( 280,  1,  1,  280,  1,  1)
+        , (2017,  1, 14, 2017,  1,  1)
+        , (2018,  1, 14, 2018,  1,  1)
+        , (2019,  1, 14, 2019,  1,  1)
+        , (2020,  1, 14, 2020,  1,  1)
         );
 }
