@@ -1,17 +1,186 @@
 use v6.c;
 use Date::Names;
 use Date::Calendar::Strftime;
-use Date::Calendar::Julian::Common;
 use List::MoreUtils <last_index>;
 
-unit class Date::Calendar::Julian:ver<0.0.3>:auth<cpan:JFORGET>
-      does Date::Calendar::Julian::Common
-      does Date::Calendar::Strftime;
+unit role Date::Calendar::Julian::Common:ver<0.0.3>:auth<cpan:JFORGET>;
 
-method year-shift {
-  0;
+has Int $.year;
+has Int $.month where { 1 ≤ $_ ≤ 12 };
+has Int $.day   where { 1 ≤ $_ ≤ 31 };
+has Int $.daycount;
+has Int $.day-of-year;
+has Int $.day-of-week;
+has Int $.week-number;
+has Int $.week-year;
+has Str $.locale is rw where { check-locale($_) } = 'en';
+
+has Str         $!instantiated-locale;
+has Date::Names $!date-names;
+
+method BUILD(Int:D :$year, Int:D :$month, Int:D :$day, Str :$locale = 'en') {
+  self!check-build-args($year, $month, $day, $locale);
+  self!build-from-args( $year, $month, $day, $locale);
 }
 
+method !check-build-args(Int $year, Int $month, Int $day, Str $locale) {
+  unless 1 ≤ $month ≤ 12 {
+    X::OutOfRange.new(:what<Month>, :got($month), :range<1..12>).throw;
+  }
+  if $month == 4 | 6 | 9 | 11 {
+    unless 1 ≤ $day ≤ 30 {
+      X::OutOfRange.new(:what<Day>, :got($day), :range("1..30 for this month")).throw;
+    }
+  }
+  elsif $month != 2 {
+    unless 1 ≤ $day ≤ 31 {
+      X::OutOfRange.new(:what<Day>, :got($day), :range("1..31 for this month")).throw;
+    }
+  }
+  elsif $year %% 4 {
+    unless 1 ≤ $day ≤ 29 {
+      X::OutOfRange.new(:what<Day>, :got($day), :range("1..29 for February in a leap year")).throw;
+    }
+  }
+  else {
+    unless 1 ≤ $day ≤ 28 {
+      X::OutOfRange.new(:what<Day>, :got($day), :range("1..28 for February in a normal year")).throw;
+    }
+  }
+
+  unless check-locale($locale) {
+    X::Invalid::Value.new(:method<BUILD>, :name<locale>, :value($locale)).throw;
+  }
+
+}
+
+method !build-from-args(Int $year, Int $month, Int $day, Str $locale) {
+  $!year   = $year;
+  $!month  = $month;
+  $!day    = $day;
+  $!locale = $locale;
+  $!instantiated-locale = '';
+
+  my Int @full-offset = full-offset($year);
+  my Int $doy = @full-offset[$month] + $day;
+  my Int $mjd = $doy + (($year - 1) × 365.25).floor - mjd-bias();
+  my Int $dow = ($mjd + 2) % 7 + 1;
+
+  $!day-of-year = $doy;
+  $!daycount    = $mjd;
+  $!day-of-week = $dow;
+
+  # computing week-related derived attributes
+  my Int $doy-thursday = $doy - $dow + 4; # day-of-year value for the nearest Thursday
+  my Int $week-year    = $year;
+  if $doy-thursday ≤ 0 {
+    -- $week-year;
+    $doy         += year-days($week-year);
+    $doy-thursday = $doy - $dow + 4;
+  }
+  else {
+    my $year-length = year-days($week-year);
+    if $doy-thursday > $year-length {
+      $doy         -= $year-length;
+      $doy-thursday = $doy - $dow + 4;
+      ++ $week-year;
+    }
+  }
+  my Int $week-number = ($doy-thursday / 7).ceiling;
+
+  # storing week-related derived attributes
+  $!week-number = $week-number;
+  $!week-year   = $week-year;
+}
+
+method gist {
+  sprintf("%04d-%02d-%02d", $.year, $.month, $.day);
+}
+
+method new-from-date($date) {
+  $.new-from-daycount($date.daycount);
+}
+
+method new-from-daycount(Int $count) {
+  my Int $biased-count = $count + mjd-bias;
+  my Int $y      = 1 + (($biased-count - 0.25) / 365.25).floor;
+  my Int $doy    = $biased-count - (365.25 × ($y - 1)).floor;
+  my Int @offset = full-offset($y);
+  my Int $m      = last_index { $doy > $_ }, @offset;
+  my Int $d      = $doy - @offset[$m];
+  $.new(year => $y, month => $m, day => $d);
+}
+
+method to-date($class = 'Date') {
+  # See "Learning Perl 6" page 177
+  my $d = ::($class).new-from-daycount($.daycount);
+  return $d;
+}
+
+method month-name {
+  self!lazy-instance;
+  $!date-names.mon($.month);
+}
+
+method day-name {
+  self!lazy-instance;
+  $!date-names.dow($.day-of-week);
+}
+
+sub mjd-bias( --> Int) {
+  return 678578;
+}
+
+method month-abbr {
+  my $locale = $.locale;
+  my $index  = $.month - 1;
+  my $class  = "Date::Names::$locale";
+  return $::($class)::mon3[$index]
+      // $::($class)::mon2[$index]
+      // $::($class)::mona[$index];
+}
+
+method day-abbr {
+  my $locale = $.locale;
+  my $index  = $.day-of-week - 1;
+  my $class  = "Date::Names::$locale";
+  return $::($class)::dow3[$index]
+      // $::($class)::dow2[$index]
+      // $::($class)::dowa[$index];
+}
+
+sub year-days (Int $year --> Int) {
+  if $year %% 4 {
+    return 366;
+  }
+  else {
+    return 365;
+  }
+}
+
+# computing the offset of each month from the beginning of the year.
+# Do not bother about the apparent "off-by-two" error, it is deliberate
+sub full-offset(Int $year) {
+  my Int @elem-offset = (0, 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30);
+  if $year %% 4 {
+    ++ @elem-offset[3];
+  }
+  return [\+] @elem-offset;
+}
+
+sub check-locale ($locale) {
+  unless grep { $_ eq $locale }, @Date::Names::langs {
+    X::Invalid::Value.new(:method<BUILD>, :name<locale>, :value($locale)).throw;
+  }
+  True;
+}
+
+method !lazy-instance {
+  if $.locale ne $!instantiated-locale {
+    $!date-names = Date::Names.new(lang => $.locale);
+    $!instantiated-locale = $.locale;
+  }
+}
 
 =begin pod
 
