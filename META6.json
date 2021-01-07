@@ -15,6 +15,7 @@
   "perl"        : "6.c",
   "provides" : {
       "Date::Calendar::Julian"         : "lib/Date/Calendar/Julian.pm6"
+    , "Date::Calendar::Julian::AUC"    : "lib/Date/Calendar/Julian/AUC.pm6"
     , "Date::Calendar::Julian::Common" : "lib/Date/Calendar/Julian/Common.pm6"
   },
   "resources" : [ ],
