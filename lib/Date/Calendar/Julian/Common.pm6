@@ -37,7 +37,7 @@ method !check-build-args(Int $year, Int $month, Int $day, Str $locale) {
       X::OutOfRange.new(:what<Day>, :got($day), :range("1..31 for this month")).throw;
     }
   }
-  elsif $year %% 4 {
+  elsif ($year - $.year-shift) %% 4 {
     unless 1 ≤ $day ≤ 29 {
       X::OutOfRange.new(:what<Day>, :got($day), :range("1..29 for February in a leap year")).throw;
     }
@@ -61,9 +61,10 @@ method !build-from-args(Int $year, Int $month, Int $day, Str $locale) {
   $!locale = $locale;
   $!instantiated-locale = '';
 
-  my Int @full-offset = full-offset($year);
+  my $shifted-year = $year - $.year-shift;
+  my Int @full-offset = full-offset($shifted-year);
   my Int $doy = @full-offset[$month] + $day;
-  my Int $mjd = $doy + (($year - 1) × 365.25).floor - mjd-bias();
+  my Int $mjd = $doy + (($shifted-year - 1) × 365.25).floor - mjd-bias();
   my Int $dow = ($mjd + 2) % 7 + 1;
 
   $!day-of-year = $doy;
@@ -79,7 +80,7 @@ method !build-from-args(Int $year, Int $month, Int $day, Str $locale) {
     $doy-thursday = $doy - $dow + 4;
   }
   else {
-    my $year-length = year-days($week-year);
+    my $year-length = year-days($week-year - $.year-shift);
     if $doy-thursday > $year-length {
       $doy         -= $year-length;
       $doy-thursday = $doy - $dow + 4;
