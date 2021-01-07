@@ -94,10 +94,6 @@ method !build-from-args(Int $year, Int $month, Int $day, Str $locale) {
   $!week-year   = $week-year;
 }
 
-method gist {
-  sprintf("%04d-%02d-%02d", $.year, $.month, $.day);
-}
-
 method new-from-date($date) {
   $.new-from-daycount($date.daycount);
 }
@@ -598,7 +594,7 @@ Jean Forget <JFORGET@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright © 2020 Jean Forget
+Copyright (c) 2020, 2021 Jean Forget
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

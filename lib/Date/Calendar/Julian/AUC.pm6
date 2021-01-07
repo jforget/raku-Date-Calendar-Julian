@@ -12,6 +12,10 @@ method year-shift {
   753;
 }
 
+method gist {
+  sprintf("%04d-%02d-%02d AUC", $.year, $.month, $.day);
+}
+
 
 =begin pod
 
@@ -21,47 +25,37 @@ Date::Calendar::Julian::AUC - Julian calendar based on the founding of Rome
 
 =head1 SYNOPSIS
 
-Converting a Gregorian date (e.g. 15 February 2020) into Julian
+Converting a Gregorian date (e.g. 14 January 2021) into Julian, using the founding of Rome for the epoch
 
 =begin code :lang<perl6>
 
-use Date::Calendar::Julian;
+use Date::Calendar::Julian::AUC;
 
-my Date $feb15-grg;
-my Date::Calendar::Julian $palindrome-jul;
+my Date $jan14-grg;
+my Date::Calendar::Julian::AUC $jan14-jul;
 
-$feb15-grg      .= new(2020, 2, 15);
-$palindrome-jul .= new-from-date($feb15-grg);
+$jan14-grg .= new(2021, 1, 14);
+$jan14-jul .= new-from-date($jan14-grg);
 
-say $palindrome-jul;
-# --> 2020-02-02
-$palindrome-jul.locale = 'nl';
-say $palindrome-jul.strftime("%A %e %B %Y");
-# --> zaterdag  2 februari 2020
+say $jan14-jul;
+# --> 2774-01-01 AUC
 
-my Str $s1 = $palindrome-jul.strftime("%Y%m%d");
-if $s1 eq $s1.flip {
-  say "$s1 is a palindrome in YYYYMMDD format!";
-}
-$s1 = $palindrome-jul.strftime("%d%m%Y");
-if $s1 eq $s1.flip {
-  say "$s1 is a palindrome in DDMMYYYY format!";
-}
-$s1 = $palindrome-jul.strftime("%m%d%Y");
-if $s1 eq $s1.flip {
-  say "$s1 is a palindrome in MMDDYYYY format!";
-}
+$jan14-jul.locale = 'nl';
+say $jan14-jul.strftime("%A %e %B %Y");
+# --> donderdag  1 januari 2774
 
 =end code
 
-Converting a Julian date (e.g. 1st August 2020) into Gregorian
+Converting a Julian date (e.g. 1st August 2773 AUC) into Gregorian
 
 =begin code :lang<perl6>
-use Date::Calendar::Julian;
-my Date::Calendar::Julian $TPRC-Amsterdam-jul;
-my Date                   $TPRC-Amsterdam-grg;
+use Date::Calendar::Julian::AUC;
 
-$TPRC-Amsterdam-jul .= new(year  => 2020
+my  Date::Calendar::Julian::AUC
+        $TPRC-Amsterdam-jul;
+my Date $TPRC-Amsterdam-grg;
+
+$TPRC-Amsterdam-jul .= new(year  => 2773
                          , month =>    8
                          , day   =>    1);
 $TPRC-Amsterdam-grg = $TPRC-Amsterdam-jul.to-date;
@@ -73,14 +67,22 @@ say "The Perl and Raku conference was scheduled to end on ", $TPRC-Amsterdam-grg
 
 =head1 DESCRIPTION
 
-Date::Calendar::Julian is  a class  representing the  Julian calendar,
-the forerunner  of the  Gregorian calendar. The  module allows  you to
-convert Julian dates  into other calendars and to  convert other dates
-into the Julian calendar.
+Date::Calendar::Julian::AUC  is   a  class  representing   the  Julian
+calendar, the  forerunner of the  Gregorian calendar. Contrary  to the
+C<Date::Calendar::Julian> class, years are  numbered from the founding
+of Rome instead of from the approximate year of the birth of Christ.
+
+I<AUC> is a latin abbreviation for I<Ab Urbe Condita>, that is, "Since
+the  founding of  the City"  (the City  with a  capital "C"  being, of
+course, Rome).
+
+The module allows you to convert Julian dates into other calendars and
+to convert other dates into the Julian calendar.
 
 The Julian  differ from the Gregorian  calendar only on the  leap year
-rule. For  the Julian calendar,  every multiple of  4 is a  leap year.
-There is no adjustment on a century year.
+rule. For the  Julian calendar, leap years follow a  4-year cycle. For
+the AUC variant, leap years are  years following a multiple of 4, such
+as 5 or 9. There is no adjustment on a century year.
 
 This  module  adopts a  simplified  point  of  view about  the  Julian
 calendar. Except for  the leap year rule, everything in  the module is
@@ -96,6 +98,26 @@ of the  years follows the  rule of integers  and that the  number just
 before 1 is 0, not -1 (or 1  BC). This is the point of view adopted by
 this module. And also by the core module C<Date> (which implements the
 Gregorian calendar).
+
+=head2 Warning
+
+This module is  NOT an implementation of the early  Roman calendar. It
+is an implementation of the Julian  calendar, which was in effect from
+45 BC (or -44,  or 709 AUC). The real early Roman  calendar was a very
+complicated matter, because it was  mixing astronomy and politics. The
+consuls were  taking office on January  1st and leaving office  on the
+following January  1st. So when  the calendar  keepers did not  like a
+consul, they would shorten the year.  And when they liked him (or were
+bribed by him), they would lengthen the year.
+
+The Julian reform, taking effect on  45 BC, would give years of nearly
+equal lengths: 365 or 366 days. But there was still a problem with it.
+At first,  leap years were  following a  3-year cycle. This  was fixed
+after  a  few  decades,  around  year 12  AD  (765  AUC).  The  module
+C<Date::Calendar::Julian::AUC>     (and    its     companion    module
+C<Date::Calendar::Julian) represent the dates I<after> this fix.
+
+=head1 METHODS
 
 =head2 Constructors
 
@@ -124,7 +146,9 @@ built with the default locale, C<'en'>.
 
 =head3 gist
 
-Gives a short string representing the date, in C<YYYY-MM-DD> format.
+Gives a  short string representing  the date, in  C<YYYY-MM-DD> format
+with  an "AUC"  postfix  to  prevent confusion  with  the main  Julian
+calendar module.
 
 =head3 year, month, day
 
@@ -193,7 +217,7 @@ years, 1 to 366 on leap years.
 =head3 daycount
 
 Convert  the date  to Modified  Julian Day  Number (a  day-only scheme
-based on 17 November 1858).
+based on Gregorian 17 November 1858).
 
 =head2 Other Methods
 
@@ -399,10 +423,6 @@ L<DateTime>
 
 L<DateTime::Calendar::Julian>
 
-L<Date::Convert>
-
-L<Date::Julian::Simple>
-
 L<Date::Converter>
 
 =head2 Other Software
@@ -428,7 +448,7 @@ Jean Forget <JFORGET@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright © 2020 Jean Forget
+Copyright (c) 2021 Jean Forget
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

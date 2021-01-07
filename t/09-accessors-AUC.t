@@ -13,7 +13,7 @@ my Date::Calendar::Julian::AUC $d .= new(year => 2020, month => 2, day => 3);
 is($d.month,   2);
 is($d.day,     3);
 is($d.year, 2020);
-is($d.gist       , '2020-02-03');
+is($d.gist       , '2020-02-03 AUC');
 is($d.locale     , 'en');
 is($d.month-abbr , 'Feb');
 is($d.month-name , 'February');
