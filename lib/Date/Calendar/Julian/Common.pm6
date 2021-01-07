@@ -109,7 +109,7 @@ method new-from-daycount(Int $count) {
   my Int @offset = full-offset($y);
   my Int $m      = last_index { $doy > $_ }, @offset;
   my Int $d      = $doy - @offset[$m];
-  $.new(year => $y, month => $m, day => $d);
+  $.new(year => $y + $.year-shift, month => $m, day => $d);
 }
 
 method to-date($class = 'Date') {
