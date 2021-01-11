@@ -426,6 +426,12 @@ Edward M. Reingold, Cambridge University Press, see
 L<http://www.calendarists.com>
 or L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-ultimate-edition-4th-edition?format=PB&isbn=9781107683167>.
 
+I<La saga des calendriers>, by Jean Lefort, published by I<Belin> (I<Pour la Science>), ISBN 2-90929-003-5
+See L<https://www.belin-editeur.com/la-saga-des-calendriers>
+
+I<Le Calendrier>, by Paul Couderc, published by I<Presses universitaires de France> (I<Que sais-je ?>), ISBN 2-13-036266-4
+See L<https://catalogue.bnf.fr/ark:/12148/cb329699661>.
+
 =head1 AUTHOR
 
 Jean Forget <JFORGET@cpan.org>

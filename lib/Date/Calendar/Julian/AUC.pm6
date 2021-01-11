@@ -85,37 +85,40 @@ the AUC variant, leap years are  years following a multiple of 4, such
 as 5 or 9. There is no adjustment on a century year.
 
 This  module  adopts a  simplified  point  of  view about  the  Julian
-calendar. Except for  the leap year rule, everything in  the module is
-similar  to the  Gregorian calendar.  Days are  midnight to  midnight,
-weeks are  Monday to Sunday, years  are 1st January to  31st December.
-Historically, the rules were not as rigid as that, especially the rule
-defining the beginning of the year.
+calendar. Except for the leap year  rule and for the epoch, everything
+in the module is similar to  the Gregorian calendar. Days are midnight
+to midnight, weeks are Monday to Sunday, years are 1st January to 31st
+December.  Historically,  the  rules  were   not  as  rigid  as  that,
+especially the rule defining the beginning of the year.
 
-Another simplification is that there is a year zero. Generally, people
-consider that the day  before 1st January 1 AD is  31st December 1 BC.
-But another point of view is  possible, by deciding that the numbering
-of the  years follows the  rule of integers  and that the  number just
-before 1 is 0, not -1 (or 1  BC). This is the point of view adopted by
-this module. And also by the core module C<Date> (which implements the
-Gregorian calendar).
+Another simplification  is that  there is  a year  zero. With  the AUC
+epoch,  we do  not usually  consider dates  I<before> the  founding of
+Rome. Yet the class allows the creation of dates before the epoch and,
+if running backwards in  time, the years are numbered 2,  1, 0, -1, -2
+and so on. So the day before 1st January 1 AUC is 31st December 0 AUC.
+This is the point of view adopted by this module. And also by the core
+module C<Date> (which implements the Gregorian calendar).
 
 =head2 Warning
 
 This module is  NOT an implementation of the early  Roman calendar. It
 is an implementation of the Julian  calendar, which was in effect from
 45 BC (or -44,  or 709 AUC). The real early Roman  calendar was a very
-complicated matter, because it was  mixing astronomy and politics. The
+complicated matter, with a leap month instead of a leap day. The rules
+for including the  leap month were mixing astronomy  and politics. The
 consuls were  taking office on January  1st and leaving office  on the
 following January  1st. So when  the calendar  keepers did not  like a
-consul, they would shorten the year.  And when they liked him (or were
-bribed by him), they would lengthen the year.
+consul, they would shorten the year even if the astronomical situation
+would require adding a leap month.  And when they liked the consul (or
+were bribed by him), they would  lengthen the year by including a leap
+month, even if the astronomical situation did not require it.
 
 The Julian reform, taking effect on  45 BC, would give years of nearly
 equal lengths: 365 or 366 days. But there was still a problem with it.
 At first,  leap years were  following a  3-year cycle. This  was fixed
 after  a  few  decades,  around  year 12  AD  (765  AUC).  The  module
 C<Date::Calendar::Julian::AUC>     (and    its     companion    module
-C<Date::Calendar::Julian) represent the dates I<after> this fix.
+C<Date::Calendar::Julian>) represent the dates I<after> this fix.
 
 =head1 METHODS
 
@@ -441,6 +444,12 @@ Calendrical Calculations (Third or Fourth Edition) by Nachum Dershowitz and
 Edward M. Reingold, Cambridge University Press, see
 L<http://www.calendarists.com>
 or L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-ultimate-edition-4th-edition?format=PB&isbn=9781107683167>.
+
+I<La saga des calendriers>, by Jean Lefort, published by I<Belin> (I<Pour la Science>), ISBN 2-90929-003-5
+See L<https://www.belin-editeur.com/la-saga-des-calendriers>
+
+I<Le Calendrier>, by Paul Couderc, published by I<Presses universitaires de France> (I<Que sais-je ?>), ISBN 2-13-036266-4
+See L<https://catalogue.bnf.fr/ark:/12148/cb329699661>.
 
 =head1 AUTHOR
 
