@@ -94,7 +94,7 @@ especially the rule defining the beginning of the year.
 Another simplification  is that  there is  a year  zero. With  the AUC
 epoch,  we do  not usually  consider dates  I<before> the  founding of
 Rome. Yet the class allows the creation of dates before the epoch and,
-if running backwards in  time, the years are numbered 2,  1, 0, -1, -2
+if you count backwards in time, the years are numbered 2, 1, 0, -1, -2
 and so on. So the day before 1st January 1 AUC is 31st December 0 AUC.
 This is the point of view adopted by this module. And also by the core
 module C<Date> (which implements the Gregorian calendar).
@@ -119,6 +119,9 @@ At first,  leap years were  following a  3-year cycle. This  was fixed
 after  a  few  decades,  around  year 12  AD  (765  AUC).  The  module
 C<Date::Calendar::Julian::AUC>     (and    its     companion    module
 C<Date::Calendar::Julian>) represent the dates I<after> this fix.
+
+The module does not implement  I<Nones>, I<Ides> and I<Calends>. Dates
+are given with weekdays from Monday to Sunday.
 
 =head1 METHODS
 
