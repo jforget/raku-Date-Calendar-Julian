@@ -3,7 +3,7 @@ use Date::Names;
 use Date::Calendar::Strftime;
 use List::MoreUtils <last_index>;
 
-unit role Date::Calendar::Julian::Common:ver<0.0.3>:auth<cpan:JFORGET>;
+unit role Date::Calendar::Julian::Common:ver<0.0.4>:auth<cpan:JFORGET>;
 
 has Int $.year;
 has Int $.month where { 1 ≤ $_ ≤ 12 };

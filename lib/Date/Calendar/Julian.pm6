@@ -4,7 +4,7 @@ use Date::Calendar::Strftime;
 use Date::Calendar::Julian::Common;
 use List::MoreUtils <last_index>;
 
-unit class Date::Calendar::Julian:ver<0.0.3>:auth<cpan:JFORGET>
+unit class Date::Calendar::Julian:ver<0.0.4>:auth<cpan:JFORGET>
       does Date::Calendar::Julian::Common
       does Date::Calendar::Strftime;
 
