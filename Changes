@@ -1,6 +1,7 @@
 Revision history for Date-Calendar-Julian
 
-0.0.3 released on...
+0.0.3 released on Wednesday 31 December 2773 AUC (Wednesday 13 January 2021 AD Gregorian)
+    - new class for AUC year-counting scheme.
 
 0.0.2 released on Thursday 24 July 2020 Julian (Thursday 6th August Gregorian)
     - fix a crash which occurred when converting to 1st January on most years.

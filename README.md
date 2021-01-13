@@ -78,6 +78,9 @@ Date::Calendar::Julian  is a  class representing  dates in  the Julian
 calendar. It allows  you to convert an Julian date  into Gregorian (or
 possibly other) calendar and the other way.
 
+With class Date::Calendar::Julian::AUC, you  can count the years since
+the founding of Rome.
+
 AUTHOR
 ======
 
@@ -86,7 +89,7 @@ Jean Forget <JFORGET@cpan.org>
 COPYRIGHT AND LICENSE
 =====================
 
-Copyright © 2020 Jean Forget
+Copyright © 2020, 2021 Jean Forget
 
 This library is  free software; you can redistribute  it and/or modify
 it under the Artistic License 2.0.
