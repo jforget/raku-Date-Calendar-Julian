@@ -44,7 +44,7 @@ sub test-data {
            , (2020,  3,  1, 'de', '%A %B %a %b', 19, 'Samstag März Sa Mär')
            , (2020,  3,  5, 'es', '%A %a',       13, 'miércoles mié')
            , (2020,  2,  1, 'fr', '%A %B',       16, 'vendredi février')
-           , (2020,  3,  2, 'nb', '%A %B %a %b', 17, 'søndag mars %a %b')
+           , (2020,  3,  2, 'nb', '%A %B',       11, 'søndag mars')
            , (2020,  3,  2, 'ru', '%A %B %a %b', 23, 'воскресенье март Вс мар')
              );
 }
