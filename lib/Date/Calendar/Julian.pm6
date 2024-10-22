@@ -4,7 +4,7 @@ use Date::Calendar::Strftime;
 use Date::Calendar::Julian::Common;
 use List::MoreUtils <last_index>;
 
-unit class Date::Calendar::Julian:ver<0.0.4>:auth<cpan:JFORGET>
+unit class Date::Calendar::Julian:ver<0.0.4>:auth<zef:jforget>:api<0>
       does Date::Calendar::Julian::Common
       does Date::Calendar::Strftime;
 
@@ -343,6 +343,9 @@ The day of the year as a decimal number (range 001 to 366).
 
 Redundant with C<%Y> and strongly discouraged: the year number.
 
+Since  2024 and  the release  of C<Date::Calendar::Strfrtime>  version
+C<0.0.4>, this strftime specifier is deprecated.
+
 =defn C<%m>
 
 The month as a two-digit decimal  number (range 01 to 12), including a
@@ -387,6 +390,9 @@ or L<https://github.com/jforget/raku-Date-Calendar-Gregorian>
 
 L<Date::Calendar::Hebrew>
 or L<https://github.com/jforget/raku-Date-Calendar-Hebrew>
+
+L<Date::Calendar::Hijri>
+or L<https://github.com/jforget/raku-Date-Calendar-Hijri>
 
 L<Date::Calendar::CopticEthiopic>
 or L<https://github.com/jforget/raku-Date-Calendar-CopticEthiopic>
@@ -434,11 +440,11 @@ See L<https://catalogue.bnf.fr/ark:/12148/cb329699661>.
 
 =head1 AUTHOR
 
-Jean Forget <JFORGET@cpan.org>
+Jean Forget <J2N-FORGET at orange dot fr>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2020, 2021 Jean Forget
+Copyright (c) 2020, 2021, 2024 Jean Forget
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
