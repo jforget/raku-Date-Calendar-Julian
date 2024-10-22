@@ -403,6 +403,12 @@ or L<https://github.com/jforget/raku-Date-Calendar-MayaAztec>
 L<Date::Calendar::FrenchRevolutionary>
 or L<https://github.com/jforget/raku-Date-Calendar-FrenchRevolutionary>
 
+L<Date::Calendar::Persian>
+or L<https://github.com/jforget/raku-Date-Calendar-Persian>
+
+L<Date::Calendar::Bahai>
+or L<https://github.com/jforget/raku-Date-Calendar-Bahai>
+
 =head2 Perl 5 Software
 
 L<DateTime>
