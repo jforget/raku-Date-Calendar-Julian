@@ -1,6 +1,6 @@
 Revision history for Date-Calendar-Julian
 
-0.0.4 released on...
+0.0.4 released on Thursday 11 October 2777 (Thursday 24 October 2024)
     - add an "api" property to the classes
     - migration from CPAN6 to zef
     - fewer t/*.t tests and adding xt/*.t tests
