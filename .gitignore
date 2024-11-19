@@ -1,4 +1,6 @@
+*~
 /blib/
+/doc/
 /src/*.o
 /src/Makefile
 /.panda-work
@@ -6,4 +8,3 @@
 /resources/*.dylib
 .precomp/
 /Date-Calendar-Julian-*
-*~
