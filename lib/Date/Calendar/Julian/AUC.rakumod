@@ -1,10 +1,10 @@
-use v6.c;
+use v6.d;
 use Date::Names;
 use Date::Calendar::Strftime;
 use Date::Calendar::Julian::Common;
 use List::MoreUtils <last_index>;
 
-unit class Date::Calendar::Julian::AUC:ver<0.0.4>:auth<zef:jforget>:api<0>
+unit class Date::Calendar::Julian::AUC:ver<0.1.0>:auth<zef:jforget>:api<1>
       does Date::Calendar::Julian::Common
       does Date::Calendar::Strftime;
 

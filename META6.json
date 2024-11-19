@@ -1,5 +1,5 @@
 {
-  "api"     : "0",
+  "api"     : "1",
   "auth"    : "zef:jforget",
   "authors" : [
       "Jean Forget"
@@ -13,11 +13,11 @@
   "description" : "Conversions from / to the Julian calendar",
   "license"     : "Artistic-2.0",
   "name"        : "Date::Calendar::Julian",
-  "perl"        : "6.c",
+  "perl"        : "6.d",
   "provides" : {
-      "Date::Calendar::Julian"         : "lib/Date/Calendar/Julian.pm6"
-    , "Date::Calendar::Julian::AUC"    : "lib/Date/Calendar/Julian/AUC.pm6"
-    , "Date::Calendar::Julian::Common" : "lib/Date/Calendar/Julian/Common.pm6"
+      "Date::Calendar::Julian"         : "lib/Date/Calendar/Julian.rakumod"
+    , "Date::Calendar::Julian::AUC"    : "lib/Date/Calendar/Julian/AUC.rakumod"
+    , "Date::Calendar::Julian::Common" : "lib/Date/Calendar/Julian/Common.rakumod"
   },
   "resources" : [ ],
   "source-url" : "https://github.com/jforget/raku-Date-Calendar-Julian.git",
@@ -31,5 +31,5 @@
   "test-depends" : [
       "Test::META"
   ],
-  "version" : "0.0.4"
+  "version" : "0.1.0"
 }

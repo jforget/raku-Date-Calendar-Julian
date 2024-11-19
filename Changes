@@ -1,5 +1,9 @@
 Revision history for Date-Calendar-Julian
 
+0.1.0 released on...
+    - use file extensions '.rakumod' and '.rakutest' instead of '.pm6' and '.t'
+    - add a "daypart" method, so the "after sunset" dates will be properly converted from / to midnight-to-midnight calendars
+
 0.0.4 released on Thursday 11 October 2777 (Thursday 24 October 2024)
     - add an "api" property to the classes
     - migration from CPAN6 to zef
