@@ -106,20 +106,22 @@ Gregorian calendar).
 =head3 new
 
 Create a  Julian date by  giving the year,  month and day  numbers and
-optionally the locale.
+optionally the locale and the daypart.
 
 =head3 new-from-date
 
 Build a  Julian date  by cloning  an object  from another  class. This
 other   class    can   be    the   core    class   C<Date>    or   any
-C<Date::Calendar::>R<xxx> class with a C<daycount> method.
+C<Date::Calendar::>R<xxx>   class  with   a  C<daycount>   method  and
+hopefully a C<daypart> method.
 
 This method does not allow a  C<locale> build parameter. The object is
 built with the default locale, C<'en'>.
 
 =head3 new-from-daycount
 
-Build a Julian date from the Modified Julian Day number.
+Build a Julian  date from the Modified Julian Day  number and from the
+C<daypart> parameter (optional).
 
 This method does not allow a  C<locale> build parameter. The object is
 built with the default locale, C<'en'>.
@@ -133,6 +135,16 @@ Gives a short string representing the date, in C<YYYY-MM-DD> format.
 =head3 year, month, day
 
 The numbers defining the date.
+
+=head3 daypart
+
+A  number indicating  which part  of the  day. This  number should  be
+filled   and   compared   with   the   following   subroutines,   with
+self-documenting names:
+
+=item before-sunrise
+=item daylight
+=item after-sunset
 
 =head3 locale
 
@@ -151,9 +163,8 @@ locale.
 The abbreviated month of the date.
 
 Depending on  the locale,  it may be  a 3-char string,  a 2-char  or a
-string  short   code  of   variable  length.   Please  refer   to  the
-documentation  of  C<Date::Names>  for the  availability  of  C<mon3>,
-C<mon2> and C<mona>.
+short code  of variable length.  Please refer to the  documentation of
+C<Date::Names> for the availability of C<mon3>, C<mon2> and C<mona>.
 
 =head3 day-name
 
@@ -242,7 +253,7 @@ inheriting from C<Date> and implementing the Gregorian calendar.
 Even  if both  calendars use  a C<locale>  attribute, when  a date  is
 created by  the conversion  of another  date, it  is created  with the
 default  locale. If  you  want the  locale to  be  transmitted in  the
-conversion, you should add this line:
+conversion, you should add a line such as:
 
 =begin code :lang<perl6>
 
@@ -294,138 +305,155 @@ variants of the date attribute. Not used with the Julian calendar.
 
 The allowed type codes are:
 
-=defn C<%a>
+=defn %a
 
 The day of week name, abbreviated to 3 chars.
 
-=defn C<%A>
+=defn %A
 
 The full day of week name.
 
-=defn C<%b>
+=defn %b
 
 The abbreviated month name.
 
-=defn C<%B>
+=defn %B
 
 The full month name.
 
-=defn C<%d>
+=defn %d
 
 The day of the month as a decimal number (range 01 to 31).
 
-=defn C<%e>
+=defn %e
 
 Like C<%d>, the  day of the month  as a decimal number,  but a leading
 zero is replaced by a space.
 
-=defn C<%f>
+=defn %f
 
 The month as a decimal number (1  to 12). Unlike C<%m>, a leading zero
 is replaced by a space.
 
-=defn C<%F>
+=defn %F
 
 Equivalent to %Y-%m-%d (the ISO 8601 date format)
 
-=defn C<%G>
+=defn %G
 
 The "week year"  as a decimal number. Mostly similar  to C<%Y>, but it
 may differ  on the very  first days  of the year  or on the  very last
 days. Analogous to the year number  in the so-called "ISO date" format
 for Gregorian dates.
 
-=defn C<%j>
+=defn %j
 
 The day of the year as a decimal number (range 001 to 366).
 
-=defn C<%L>
+=defn %L
 
 Redundant with C<%Y> and strongly discouraged: the year number.
 
 Since  2024 and  the release  of C<Date::Calendar::Strfrtime>  version
 C<0.0.4>, this strftime specifier is deprecated.
 
-=defn C<%m>
+=defn %m
 
 The month as a two-digit decimal  number (range 01 to 12), including a
 leading zero if necessary.
 
-=defn C<%n>
+=defn %n
 
 A newline character.
 
-=defn C<%t>
+=defn %Ep
+
+Gives a 1-char string representing the day part:
+
+=item C<☾> or C<U+263E> before sunrise,
+=item C<☼> or C<U+263C> during daylight,
+=item C<☽> or C<U+263D> after sunset.
+
+Rationale: in  C or in  other programming languages,  when C<strftime>
+deals with a date-time object, the day is split into two parts, before
+noon and  after noon. The  C<%p> specifier  reflects this by  giving a
+C<"AM"> or C<"PM"> string.
+
+The  3-part   splitting  in   the  C<Date::Calendar::>R<xxx>   may  be
+considered as  an alternate  splitting of  a day.  To reflect  this in
+C<strftime>, we use an alternate version of C<%p>, therefore C<%Ep>.
+
+=defn %t
 
 A tab character.
 
-=defn C<%u>
+=defn %u
 
 The day of week as a 1..7 number.
 
-=defn C<%V>
+=defn %V
 
 The week  number as defined above,  similar to the week  number in the
 so-called "ISO date" format for Gregorian dates.
 
-=defn C<%Y>
+=defn %Y
 
 The year as a decimal number.
 
-=defn C<%%>
+=defn %%
 
-A literal `%' character.
+A literal C<`%'> character.
 
 =head1 SEE ALSO
 
 =head2 Raku Software
 
-L<Date::Names>
+L<Date::Names|https://raku.land/zef:tbrowder/Date::Names>
 
-L<Date::Calendar::Strftime>
+L<Date::Calendar::Strftime|https://raku.land/zef:jforget/Date::Calendar::Strftime>
 or L<https://github.com/jforget/raku-Date-Calendar-Strftime>
 
-L<Date::Calendar::Gregorian>
+L<Date::Calendar::Gregorian|https://raku.land/zef:jforget/Date::Calendar::Gregorian>
 or L<https://github.com/jforget/raku-Date-Calendar-Gregorian>
 
-L<Date::Calendar::Hebrew>
+L<Date::Calendar::Hebrew|https://raku.land/zef:jforget/Date::Calendar::Hebrew>
 or L<https://github.com/jforget/raku-Date-Calendar-Hebrew>
 
-L<Date::Calendar::Hijri>
+L<Date::Calendar::Hijri|https://raku.land/zef:jforget/Date::Calendar::Hijri>
 or L<https://github.com/jforget/raku-Date-Calendar-Hijri>
 
-L<Date::Calendar::CopticEthiopic>
+L<Date::Calendar::CopticEthiopic|https://raku.land/zef:jforget/Date::Calendar::CopticEthiopic>
 or L<https://github.com/jforget/raku-Date-Calendar-CopticEthiopic>
 
-L<Date::Calendar::MayaAztec>
+L<Date::Calendar::MayaAztec|https://raku.land/zef:jforget/Date::Calendar::MayaAztec>
 or L<https://github.com/jforget/raku-Date-Calendar-MayaAztec>
 
-L<Date::Calendar::FrenchRevolutionary>
+L<Date::Calendar::FrenchRevolutionary|https://raku.land/zef:jforget/Date::Calendar::FrenchRevolutionary>
 or L<https://github.com/jforget/raku-Date-Calendar-FrenchRevolutionary>
 
-L<Date::Calendar::Persian>
+L<Date::Calendar::Persian|https://raku.land/zef:jforget/Date::Calendar::Persian>
 or L<https://github.com/jforget/raku-Date-Calendar-Persian>
 
-L<Date::Calendar::Bahai>
+L<Date::Calendar::Bahai|https://raku.land/zef:jforget/Date::Calendar::Bahai>
 or L<https://github.com/jforget/raku-Date-Calendar-Bahai>
 
 =head2 Perl 5 Software
 
-L<DateTime>
+L<DateTime|https://metacpan.org/pod/DateTime>
 
-L<DateTime::Calendar::Julian>
+L<DateTime::Calendar::Julian|https://metacpan.org/pod/DateTime::Calendar::Julian>
 
-L<Date::Convert>
+L<Date::Convert|https://metacpan.org/pod/Date::Convert>
 
-L<Date::Julian::Simple>
+L<Date::Julian::Simple|https://metacpan.org/pod/Date::Julian::Simple>
 
-L<Date::Converter>
+L<Date::Converter|https://metacpan.org/pod/Date::Converter>
 
 =head2 Other Software
 
 date(1), strftime(3)
 
-F<calendar/cal-julian.el>  in emacs or xemacs.
+C<calendar/cal-julian.el>  in emacs or xemacs.
 
 CALENDRICA 4.0 -- Common Lisp, which can be download in the "Resources" section of
 L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-ultimate-edition-4th-edition?format=PB&isbn=9781107683167>
