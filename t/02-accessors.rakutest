@@ -4,10 +4,11 @@
 use v6.d;
 use Test;
 use Date::Calendar::Julian;
+use Date::Calendar::Strftime;
 
-plan 26;
+plan 27;
 
-my Date::Calendar::Julian $d .= new(year => 2020, month => 2, day => 3);
+my Date::Calendar::Julian $d .= new(year => 2020, month => 2, day => 3, daypart => after-sunset);
 
 is($d.month,   2);
 is($d.day,     3);
@@ -20,6 +21,7 @@ is($d.day-of-week, 7);
 is($d.day-name   , 'Sunday');
 is($d.day-of-year, 34);
 is($d.day-abbr   , 'Sun');
+is($d.daypart    , after-sunset);
 
 $d.locale = 'it';
 is($d.locale    , 'it');

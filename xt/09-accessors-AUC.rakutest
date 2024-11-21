@@ -4,8 +4,9 @@
 use v6.d;
 use Test;
 use Date::Calendar::Julian::AUC;
+use Date::Calendar::Strftime;
 
-plan 26;
+plan 27;
 
 my Date::Calendar::Julian::AUC $d .= new(year => 2020, month => 2, day => 3);
 # ... which is 1267-02-03 AD Julian, or 1267-02-10 AD Gregorian
@@ -21,6 +22,7 @@ is($d.day-of-week, 4);
 is($d.day-name   , 'Thursday');
 is($d.day-of-year, 34);
 is($d.day-abbr   , 'Thu');
+is($d.daypart    , daylight);
 
 $d.locale = 'it';
 is($d.locale    , 'it');

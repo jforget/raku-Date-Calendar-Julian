@@ -9,6 +9,7 @@ has Int $.year;
 has Int $.month where { 1 ≤ $_ ≤ 12 };
 has Int $.day   where { 1 ≤ $_ ≤ 31 };
 has Int $.daycount;
+has Int $.daypart where { before-sunrise() ≤ $_ ≤ after-sunset() };
 has Int $.day-of-year;
 has Int $.day-of-week;
 has Int $.week-number;
@@ -18,9 +19,9 @@ has Str $.locale is rw where { check-locale($_) } = 'en';
 has Str         $!instantiated-locale;
 has Date::Names $!date-names;
 
-method BUILD(Int:D :$year, Int:D :$month, Int:D :$day, Str :$locale = 'en') {
+method BUILD(Int:D :$year, Int:D :$month, Int:D :$day, Str :$locale = 'en', Int :$daypart = daylight()) {
   self!check-build-args($year, $month, $day, $locale);
-  self!build-from-args( $year, $month, $day, $locale);
+  self!build-from-args( $year, $month, $day, $locale, $daypart);
 }
 
 method !check-build-args(Int $year, Int $month, Int $day, Str $locale) {
@@ -54,11 +55,12 @@ method !check-build-args(Int $year, Int $month, Int $day, Str $locale) {
 
 }
 
-method !build-from-args(Int $year, Int $month, Int $day, Str $locale) {
-  $!year   = $year;
-  $!month  = $month;
-  $!day    = $day;
-  $!locale = $locale;
+method !build-from-args(Int $year, Int $month, Int $day, Str $locale, Int $daypart) {
+  $!year    = $year;
+  $!month   = $month;
+  $!day     = $day;
+  $!daypart = $daypart;
+  $!locale  = $locale;
   $!instantiated-locale = '';
 
   my $shifted-year = $year - $.year-shift;
@@ -95,22 +97,22 @@ method !build-from-args(Int $year, Int $month, Int $day, Str $locale) {
 }
 
 method new-from-date($date) {
-  $.new-from-daycount($date.daycount);
+  $.new-from-daycount($date.daycount, daypart => $date.?daypart // daylight);
 }
 
-method new-from-daycount(Int $count) {
+method new-from-daycount(Int $count, Int :$daypart = daylight) {
   my Int $biased-count = $count + mjd-bias;
   my Int $y      = 1 + (($biased-count - 0.25) / 365.25).floor;
   my Int $doy    = $biased-count - (365.25 × ($y - 1)).floor;
   my Int @offset = full-offset($y);
   my Int $m      = last_index { $doy > $_ }, @offset;
   my Int $d      = $doy - @offset[$m];
-  $.new(year => $y + $.year-shift, month => $m, day => $d);
+  $.new(year => $y + $.year-shift, month => $m, day => $d, daypart => $daypart);
 }
 
 method to-date($class = 'Date') {
   # See "Learning Perl 6" page 177
-  my $d = ::($class).new-from-daycount($.daycount);
+  my $d = ::($class).new-from-daycount($.daycount, daypart => $.daypart);
   return $d;
 }
 
