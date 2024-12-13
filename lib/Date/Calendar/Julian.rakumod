@@ -435,6 +435,41 @@ The year as a decimal number.
 
 A literal C<`%'> character.
 
+=head1 PROBLEMS AND KNOWN ISSUES
+
+=head2 Security issues
+
+As explained in  the C<Date::Calendar::Strftime> documentation, please
+ensure that format-string  passed to C<strftime> comes  from a trusted
+source. Failing  that, the untrusted  source can include  a outrageous
+length in  a C<strftime> specifier and  this will drain your  PC's RAM
+very fast.
+
+=head2 Relations with :ver<0.0.x> classes
+
+Version 0.1.0 (and API 1) was  introduced to ease the conversions with
+other calendars  in which the  day is defined as  sunset-to-sunset. If
+all C<Date::Calendar::>R<xxx> classes use version 0.1.x and API 1, the
+conversions  will be  correct. But  if some  C<Date::Calendar::>R<xxx>
+classes use version 0.0.x and API 0, there might be problems.
+
+A date from a 0.0.x class has no C<daypart> attribute. But when "seen"
+from  a  0.1.x class,  the  0.0.x  date  seems  to have  a  C<daypart>
+attribute equal to C<daylight>. When converted from a 0.1.x class to a
+0.0.x  class,  the  date  may  just  shift  from  C<after-sunset>  (or
+C<before-sunrise>) to C<daylight>, or it  may shift to the C<daylight>
+part of  the prior (or  next) date. This  means that a  roundtrip with
+cascade conversions  may give the  starting date,  or it may  give the
+date prior or after the starting date.
+
+=head2 Time
+
+This module  and the C<Date::Calendar::>R<xxx> associated  modules are
+still date  modules, they are not  date-time modules. The user  has to
+give  the C<daypart>  attribute  as a  value among  C<before-sunrise>,
+C<daylight> or C<after-sunset>. There is no provision to give a HHMMSS
+time and convert it to a C<daypart> parameter.
+
 =head1 SEE ALSO
 
 =head2 Raku Software
