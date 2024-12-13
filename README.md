@@ -9,7 +9,7 @@ SYNOPSIS
 What is  the peculiarity of  15 February  for people using  the Julian
 calendar? And can you please print it in, say, Dutch?
 
-```perl6
+```
 use Date::Calendar::Julian;
 
 my Date $feb15-grg;
@@ -41,7 +41,7 @@ if $s1 eq $s1.flip {
 The Perl  & Raku Conference  was scheduled to  end on 1st  August when
 using the Julian calendar. What is the corresponding Gregorian date?
 
-```perl6
+```
 use Date::Calendar::Julian;
 my Date::Calendar::Julian $TPRC-Amsterdam-jul;
 my Date                   $TPRC-Amsterdam-grg;

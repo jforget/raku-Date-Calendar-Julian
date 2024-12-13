@@ -27,7 +27,7 @@ Date::Calendar::Julian - Converting from / to the Julian calendar
 
 Converting a Gregorian date (e.g. 15 February 2020) into Julian
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 
 use Date::Calendar::Julian;
 
@@ -60,7 +60,7 @@ if $s1 eq $s1.flip {
 
 Converting a Julian date (e.g. 1st August 2020) into Gregorian
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 use Date::Calendar::Julian;
 my Date::Calendar::Julian $TPRC-Amsterdam-jul;
 my Date                   $TPRC-Amsterdam-grg;
@@ -72,6 +72,33 @@ $TPRC-Amsterdam-grg = $TPRC-Amsterdam-jul.to-date;
 
 say "The Perl and Raku conference was scheduled to end on ", $TPRC-Amsterdam-grg;
 # --> The Perl and Raku conference was scheduled to end on 2020-08-14
+
+=end code
+
+Conversion with a calendar which defines days as sunset to sunset
+
+=begin code :lang<raku>
+
+use Date::Calendar::Strftime;
+use Date::Calendar::Hebrew;
+use Date::Calendar::Julian;
+my  Date::Calendar::Julian $d-ju;
+my  Date::Calendar::Hebrew $d-he;
+
+$d-ju .= new(year => 2024, month => 10, day => 31, daypart => before-sunrise());
+$d-he .= new-from-date($d-ju);
+say $d-he.strftime("%A %d %B %Y");
+# ---> "Yom Reviʻi 12 Heshvan 5785"
+
+$d-ju .= new(year => 2024, month => 10, day => 31, daypart => daylight());
+$d-he .= new-from-date($d-ju);
+say $d-he.strftime("%A %d %B %Y");
+# ---> "Yom Reviʻi 12 Heshvan 5785" again
+
+$d-ju .= new(year => 2024, month => 10, day => 31, daypart => after-sunset());
+$d-he .= new-from-date($d-ju);
+say $d-he.strftime("%A %d %B %Y");
+# ---> "Yom Chamishi 13 Heshvan 5785" instead of "Yom Reviʻi 12 Heshvan 5785"
 
 =end code
 
@@ -135,6 +162,10 @@ Gives a short string representing the date, in C<YYYY-MM-DD> format.
 =head3 year, month, day
 
 The numbers defining the date.
+
+=head3 daycount
+
+The MJD (Modified Julian Date) number for the date.
 
 =head3 daypart
 
@@ -224,7 +255,7 @@ styles,  a "push"  conversion and  a "pull"  conversion. For  example,
 while  converting  "1st February  2020"  to  the French  Revolutionary
 calendar, you can code:
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 
 use Date::Calendar::Julian;
 use Date::Calendar::FrenchRevolutionary;
@@ -255,7 +286,7 @@ created by  the conversion  of another  date, it  is created  with the
 default  locale. If  you  want the  locale to  be  transmitted in  the
 conversion, you should add a line such as:
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 
 $d-dest-pull.locale = $d-orig.locale;
 
@@ -267,7 +298,7 @@ This method is  very similar to the homonymous functions  you can find
 in several  languages (C, shell, etc).  It also takes some  ideas from
 C<printf>-similar functions. For example
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 
 $df.strftime("%04d blah blah blah %-25B")
 
@@ -409,6 +440,7 @@ A literal C<`%'> character.
 =head2 Raku Software
 
 L<Date::Names|https://raku.land/zef:tbrowder/Date::Names>
+or L<https://github.com/tbrowder/Date-Names>
 
 L<Date::Calendar::Strftime|https://raku.land/zef:jforget/Date::Calendar::Strftime>
 or L<https://github.com/jforget/raku-Date-Calendar-Strftime>
@@ -468,6 +500,7 @@ or L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-g
 
 I<La saga des calendriers>, by Jean Lefort, published by I<Belin> (I<Pour la Science>), ISBN 2-90929-003-5
 See L<https://www.belin-editeur.com/la-saga-des-calendriers>
+(site not longer responding).
 
 I<Le Calendrier>, by Paul Couderc, published by I<Presses universitaires de France> (I<Que sais-je ?>), ISBN 2-13-036266-4
 See L<https://catalogue.bnf.fr/ark:/12148/cb329699661>.

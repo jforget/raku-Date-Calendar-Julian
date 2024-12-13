@@ -27,7 +27,7 @@ Date::Calendar::Julian::AUC - Julian calendar based on the foundation of Rome
 
 Converting a Gregorian date (e.g. 14 January 2021) into Julian, using the foundation of Rome for the epoch
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 
 use Date::Calendar::Julian::AUC;
 
@@ -48,7 +48,7 @@ say $jan14-jul.strftime("%A %e %B %Y");
 
 Converting a Julian date (e.g. 1st August 2773 AUC) into Gregorian
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 use Date::Calendar::Julian::AUC;
 
 my  Date::Calendar::Julian::AUC
@@ -162,6 +162,20 @@ calendar module.
 
 The numbers defining the date.
 
+=head3 daycount
+
+The MJD (Modified Julian Date) number for the date.
+
+=head3 daypart
+
+A  number indicating  which part  of the  day. This  number should  be
+filled   and   compared   with   the   following   subroutines,   with
+self-documenting names:
+
+=item before-sunrise
+=item daylight
+=item after-sunset
+
 =head3 locale
 
 The two-char  string defining the  locale used  for the date.  Use any
@@ -240,7 +254,7 @@ styles,  a "push"  conversion and  a "pull"  conversion. For  example,
 while  converting  "31st October  2777"  to  the French  Revolutionary
 calendar, you can code:
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 
 use Date::Calendar::Julian::AUC;
 use Date::Calendar::FrenchRevolutionary;
@@ -271,7 +285,7 @@ created by  the conversion  of another  date, it  is created  with the
 default  locale. If  you  want the  locale to  be  transmitted in  the
 conversion, you should add a line such as:
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 
 $d-dest-pull.locale = $d-orig.locale;
 
@@ -283,7 +297,7 @@ This method is  very similar to the homonymous functions  you can find
 in several  languages (C, shell, etc).  It also takes some  ideas from
 C<printf>-similar functions. For example
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 
 $df.strftime("%04d blah blah blah %-25B")
 
@@ -425,6 +439,7 @@ A literal `%' character.
 =head2 Raku Software
 
 L<Date::Names|https://raku.land/zef:tbrowder/Date::Names>
+or L<https://github.com/tbrowder/Date-Names>
 
 L<Date::Calendar::Strftime|https://raku.land/zef:jforget/Date::Calendar::Strftime>
 or L<https://github.com/jforget/raku-Date-Calendar-Strftime>
@@ -480,6 +495,7 @@ or L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-g
 
 I<La saga des calendriers>, by Jean Lefort, published by I<Belin> (I<Pour la Science>), ISBN 2-90929-003-5
 See L<https://www.belin-editeur.com/la-saga-des-calendriers>
+(site not longer responding).
 
 I<Le Calendrier>, by Paul Couderc, published by I<Presses universitaires de France> (I<Que sais-je ?>), ISBN 2-13-036266-4
 See L<https://catalogue.bnf.fr/ark:/12148/cb329699661>.
