@@ -268,6 +268,8 @@ $d-orig .= new(year  => 2777
              , day   =>   31);
 $d-dest-push  = $d-orig.to-date("Date::Calendar::FrenchRevolutionary");
 $d-dest-pull .= new-from-date($d-orig);
+say $d-orig, ' ', $d-dest-push, ' ', $d-dest-pull;
+# --> "2777-10-31 AUC 0233-02-23 0233-02-23"
 
 =end code
 

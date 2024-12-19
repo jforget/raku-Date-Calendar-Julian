@@ -269,6 +269,8 @@ $d-orig .= new(year  => 2020
              , day   =>    1);
 $d-dest-push  = $d-orig.to-date("Date::Calendar::FrenchRevolutionary");
 $d-dest-pull .= new-from-date($d-orig);
+say $d-orig, ' ', $d-dest-push, ' ', $d-dest-pull;
+# --> "2020-02-01 0228-05-26 0228-05-26"
 
 =end code
 
