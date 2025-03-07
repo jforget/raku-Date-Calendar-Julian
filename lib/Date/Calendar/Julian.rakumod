@@ -530,9 +530,22 @@ date(1), strftime(3)
 
 C<calendar/cal-julian.el>  in emacs or xemacs.
 
+L<https://pypi.org/project/convertdate/>
+or L<https://convertdate.readthedocs.io/en/latest/modules/julian.html>
+
 CALENDRICA 4.0 -- Common Lisp, which can be download in the "Resources" section of
 L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-ultimate-edition-4th-edition?format=PB&isbn=9781107683167>
 (Actually, I have used the 3.0 version which is not longer available)
+
+=head2 Internet
+
+L<https://www.fourmilab.ch/documents/calendar/>
+or its French-speaking versions
+L<https://www.patricklecoq.fr/convert/cnv_calendar.html>
+and L<https://louis-aime.github.io/fourmilab_calendar_upgraded/index-fr.html>
+
+L<https://www.ephemeride.com/calendrier/autrescalendriers/21/autres-types-de-calendriers.html>
+(in French)
 
 =head2 Books
 
