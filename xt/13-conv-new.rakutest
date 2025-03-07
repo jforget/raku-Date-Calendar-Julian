@@ -27,7 +27,7 @@ use Date::Calendar::Maya::Spinden;
 use Date::Calendar::Persian;
 use Date::Calendar::Persian::Astronomical;
 
-my $ver-jl = '0.1.0';
+my $ver-jl = '0.1.1';
 my @data  = (
        (2020, 10, 14, before-sunrise, 'ba', "Fiḍál 12 Ilm 0177 ☾", "Tue 14 Oct 2020 ☾")
      , (2020, 10, 14, daylight,       'ba', "Fiḍál 12 Ilm 0177 ☼", "Tue 14 Oct 2020 ☼")

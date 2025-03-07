@@ -4,7 +4,7 @@ use Date::Calendar::Strftime;
 use Date::Calendar::Julian::Common;
 use List::MoreUtils <last_index>;
 
-unit class Date::Calendar::Julian::AUC:ver<0.1.0>:auth<zef:jforget>:api<1>
+unit class Date::Calendar::Julian::AUC:ver<0.1.1>:auth<zef:jforget>:api<1>
       does Date::Calendar::Julian::Common
       does Date::Calendar::Strftime;
 
@@ -508,7 +508,7 @@ Jean Forget <J2N-FORGET at orange dot fr>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2021, 2024 Jean Forget
+Copyright (c) 2021, 2024, 2025 Jean Forget
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
